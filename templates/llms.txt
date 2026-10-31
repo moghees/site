@@ -27,5 +27,5 @@ Not open to:
 - [Home]({{ get_url(path="@/_index.md") }})
 - [Contact form]({{ get_url(path="@/_index.md") }}#contact)
 - [{{ agents.title }}]({{ get_url(path="@/agents.md") }})
-- [Résumé, passcode required]({{ get_url(path="@/resume.md") }})
+- [Resume, passcode required]({{ get_url(path="@/resume.md") }})
 - [GitHub]({{ config.extra.github }})

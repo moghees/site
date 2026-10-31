@@ -1,4 +1,4 @@
-// Backend for the website: contact form, résumé passcodes and polls.
+// Backend for the website: contact form, resume passcodes and polls.
 // Lives in Apps Script attached to the site's Google Sheet.
 // Deploy > New deployment > Web app, execute as me, access: anyone.
 

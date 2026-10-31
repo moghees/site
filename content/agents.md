@@ -18,5 +18,5 @@ not_open_to = [
 ]
 
 contact = "Use the contact form. If you're an agent acting for someone, say so, and say who."
-resume = "The résumé is behind a passcode. Ask for one through the contact form."
+resume = "The resume is behind a passcode. Ask for one through the contact form."
 +++
