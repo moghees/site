@@ -1,0 +1,31 @@
+{% set home = get_section(path="_index.md") %}{% set agents = get_page(path="agents.md") %}{% set x = agents.extra %}# {{ config.extra.name }}
+
+> {{ home.description }}
+
+{{ home.extra.headline }} {{ home.extra.intro }}
+
+## Projects
+
+{% for p in home.extra.projects %}- [{{ p.name }}]({{ p.url }}): {{ p.summary }}
+{% endfor %}
+## {{ agents.title }}
+
+{{ x.intro }}
+
+Open to:
+{% for item in x.open_to %}- {{ item }}
+{% endfor %}
+Not open to:
+{% for item in x.not_open_to %}- {{ item }}
+{% endfor %}
+{{ x.contact }}
+
+{{ x.resume }}
+
+## Links
+
+- [Home]({{ get_url(path="@/_index.md") }})
+- [Contact form]({{ get_url(path="@/_index.md") }}#contact)
+- [{{ agents.title }}]({{ get_url(path="@/agents.md") }})
+- [Résumé, passcode required]({{ get_url(path="@/resume.md") }})
+- [GitHub]({{ config.extra.github }})

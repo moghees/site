@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block body_class %}home{% endblock %}
+
+{% block content %}
+{% set poll = config.extra.poll %}
+<div class="wrap">
+  <main class="grid">
+    <section class="card span-3 intro" aria-label="Introduction">
+      <h1>{{ section.extra.headline }}</h1>
+      <p>{{ section.extra.intro }}</p>
+    </section>
+
+    <section class="card span-2 projects" id="projects" aria-labelledby="projects-label">
+      <h2 class="label" id="projects-label">Projects</h2>
+      <ul>
+        {% for p in section.extra.projects %}
+        <li>
+          <div class="what">{{ p.name }}<span>{{ p.summary }}</span></div>
+          <a href="{{ p.url }}">GitHub ›</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="card poll" id="poll" aria-labelledby="poll-q" data-poll="{{ poll.id }}" data-min="{{ poll.min_votes }}">
+      <h2 class="label">{{ poll.label }}</h2>
+      <p class="poll-q" id="poll-q" data-a="{{ poll.a }}" data-b="{{ poll.b }}">{{ poll.a }}</p>
+      <div class="opts">
+        <button class="opt" type="button" data-answer="yes" disabled>Yes</button>
+        <button class="opt" type="button" data-answer="no" disabled>No</button>
+      </div>
+      <div class="results" hidden>
+        <div class="bar" data-version="a"><span class="fill"></span><span class="txt">{{ poll.a_short }}</span><span class="pct"></span></div>
+        <div class="bar" data-version="b"><span class="fill"></span><span class="txt">{{ poll.b_short }}</span><span class="pct"></span></div>
+        <p class="fine">{{ poll.note }}</p>
+      </div>
+      <p class="fine poll-status" role="status">Anonymous. Only totals are kept.</p>
+      <noscript><p class="fine">Voting needs JavaScript.</p></noscript>
+    </section>
+  </main>
+</div>
+
+<section class="band" id="contact" aria-labelledby="contact-h">
+  <div class="wrap contact-grid">
+    <div class="contact-copy">
+      <h2 id="contact-h">Let's talk</h2>
+      <p>Working on something in commerce, or want to compare notes on sellers?</p>
+    </div>
+    <form id="contact-form" novalidate>
+      <div class="pair">
+        <input name="name" placeholder="Name" aria-label="Name" autocomplete="name" maxlength="100">
+        <input name="email" type="email" placeholder="Email" aria-label="Email" autocomplete="email" maxlength="200" required>
+      </div>
+      <select name="topic" aria-label="Topic">
+        {% for t in config.extra.contact_topics %}<option>{{ t }}</option>{% endfor %}
+      </select>
+      <textarea name="message" placeholder="Message" aria-label="Message" maxlength="5000" required></textarea>
+      <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="actions">
+        <button class="send" type="submit" disabled>Send</button>
+        {% if config.extra.booking_url %}<a href="{{ config.extra.booking_url }}">Or book a 20-minute chat ›</a>{% endif %}
+      </div>
+      <p class="status" role="status"></p>
+      <noscript><p class="status">The form needs JavaScript.{% if config.extra.booking_url %} You can <a href="{{ config.extra.booking_url }}">book a chat</a> instead.{% endif %}</p></noscript>
+    </form>
+  </div>
+</section>
+{% endblock %}

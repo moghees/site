@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrap">
+  <main class="card prose">
+    <h1>Page not found</h1>
+    <p>Nothing lives at this address. Try the <a href="{{ get_url(path='@/_index.md') }}">home page</a>.</p>
+  </main>
+</div>
+{% endblock %}

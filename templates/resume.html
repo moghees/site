@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrap">
+  <main class="card prose" id="resume">
+    <h1>{{ page.title }}</h1>
+    <div class="locked">
+      {{ page.content | safe }}
+      <form id="unlock-form" class="unlock" novalidate>
+        <input name="code" placeholder="Passcode" aria-label="Passcode" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="100" required>
+        <input name="who" placeholder="Who's asking? (optional)" aria-label="Who's asking? (optional)" autocomplete="organization" maxlength="120">
+        <button class="send" type="submit" disabled>Unlock</button>
+        <p class="status" role="status"></p>
+      </form>
+      <p class="fine">No passcode? <a href="{{ get_url(path='@/_index.md') }}?topic=resume#contact">Ask for one</a>.</p>
+      <noscript><p class="fine">Unlocking needs JavaScript.</p></noscript>
+    </div>
+    <div class="unlocked" hidden></div>
+  </main>
+</div>
+{% endblock %}
