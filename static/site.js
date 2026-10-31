@@ -47,7 +47,7 @@
       const email = d.email.trim();
       const message = d.message.trim();
 
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      if (!/^[^\s@,;:<>()"\\]+@[^\s@,;:<>()"'\\]+\.[a-z]{2,}$/i.test(email)) {
         status.textContent = 'Enter your email so I can reply.';
         return;
       }

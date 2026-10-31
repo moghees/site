@@ -1,5 +1,5 @@
 // Backend for the website: contact form, résumé passcodes and polls.
-// Lives in Apps Script attached to the "Website" Google Sheet.
+// Lives in Apps Script attached to the site's Google Sheet.
 // Deploy > New deployment > Web app, execute as me, access: anyone.
 
 const TABS = {
@@ -10,10 +10,12 @@ const TABS = {
 };
 
 const LIMITS = {
-  contact: { count: 20, seconds: 3600 },
+  contact: { count: 10, seconds: 3600 },
   unlockFailures: { count: 10, seconds: 900 },
-  vote: { count: 500, seconds: 3600 },
+  vote: { count: 200, seconds: 3600 },
 };
+
+const EMAIL = /^[^\s@,;:<>()"\\]+@[^\s@,;:<>()"'\\]+\.[a-z]{2,}$/i;
 
 const ACTIONS = { contact, unlock, vote, results };
 
@@ -50,7 +52,7 @@ function contact(req) {
   const email = clean(req.email, 200);
   const topic = clean(req.topic, 60) || 'General';
   const message = clean(req.message, 5000, true);
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !message) {
+  if (!EMAIL.test(email) || !message) {
     return { ok: false, error: 'invalid' };
   }
   if (!allowed('contact', LIMITS.contact)) return { ok: false, error: 'busy' };
