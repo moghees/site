@@ -187,7 +187,7 @@
           status.textContent = 'That passcode didn’t work, or it has expired.';
         }
       } catch {
-        status.textContent = api ? "Couldn’t check right now. Try again?" : ‘Resume access opens soon.’;
+        status.textContent = api ? "Couldn’t check right now. Try again?" : 'Resume access opens soon.';
       } finally {
         button.disabled = false;
       }
