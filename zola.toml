@@ -1,4 +1,4 @@
-base_url = "https://yourdomain.com"
+base_url = "https://moghees.com"
 title = "Your Name"
 description = "Product lead in e-commerce and marketplaces."
 default_language = "en"
@@ -13,7 +13,7 @@ feed_filenames = ["llms.txt"]
 [extra]
 name = "Your Name"
 job_title = "Product lead, e-commerce and marketplaces"
-github = "https://github.com/yourname"
+github = "https://github.com/moghees"
 online_since = 2012
 
 # Google Calendar booking page. Leave empty to hide the link.
