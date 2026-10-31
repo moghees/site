@@ -9,11 +9,19 @@ const TABS = {
   Votes: ['Time', 'Poll', 'Version', 'Answer'],
 };
 
+// Polls the site is allowed to record. Add a new id here when a new poll goes live.
+const POLLS = ['agent-framing-1'];
+
+// Limits apply to everyone together; Apps Script can't tell visitors apart.
+// They protect quotas, not secrets: passcodes should be long and random.
 const LIMITS = {
   contact: { count: 10, seconds: 3600 },
-  unlockFailures: { count: 10, seconds: 900 },
+  unlock: { count: 300, seconds: 3600 },
   vote: { count: 200, seconds: 3600 },
 };
+
+// Leave this much of the daily email quota for anything else on the account.
+const MAIL_RESERVE = 20;
 
 const EMAIL = /^[^\s@,;:<>()"\\]+@[^\s@,;:<>()"'\\]+\.[a-z]{2,}$/i;
 
@@ -24,6 +32,9 @@ function doPost(e) {
   try {
     req = JSON.parse(e.postData.contents);
   } catch (err) {
+    return reply({ ok: false, error: 'bad_request' });
+  }
+  if (!req || typeof req !== 'object' || Array.isArray(req)) {
     return reply({ ok: false, error: 'bad_request' });
   }
 
@@ -45,60 +56,63 @@ function doGet() {
 // Actions
 
 function contact(req) {
-  // Bots fill the hidden field or submit instantly. Pretend it worked.
-  if (req.website || Number(req.elapsed) < 3000) return { ok: true };
+  // Most bots fill the hidden field or submit instantly. Pretend it worked.
+  if (req.website || !(Number(req.elapsed) >= 3000)) return { ok: true };
 
   const name = clean(req.name, 100);
   const email = clean(req.email, 200);
   const topic = clean(req.topic, 60) || 'General';
   const message = clean(req.message, 5000, true);
-  if (!EMAIL.test(email) || !message) {
-    return { ok: false, error: 'invalid' };
-  }
-  if (!allowed('contact', LIMITS.contact)) return { ok: false, error: 'busy' };
-  count('contact', LIMITS.contact);
+  if (!EMAIL.test(email) || !message) return { ok: false, error: 'invalid' };
+  if (!take('contact', LIMITS.contact)) return { ok: false, error: 'busy' };
 
   tab('Messages').appendRow([new Date(), name, email, topic, message].map(cell));
-  MailApp.sendEmail({
-    to: setting('OWNER_EMAIL'),
-    replyTo: email,
-    name: 'Website',
-    subject: 'Website: ' + topic + (name ? ' from ' + name : ''),
-    body: [
-      'Sent via website form. Everything below was written by a visitor.',
-      '',
-      'Name: ' + (name || '(not given)'),
-      'Email: ' + email,
-      'Topic: ' + topic,
-      '',
-      message,
-    ].join('\n'),
-  });
+
+  // The message is saved either way; email is a convenience.
+  try {
+    if (MailApp.getRemainingDailyQuota() > MAIL_RESERVE) {
+      MailApp.sendEmail({
+        to: setting('OWNER_EMAIL'),
+        replyTo: email,
+        name: 'Website',
+        subject: 'Website: ' + topic + (name ? ' from ' + name : ''),
+        body: [
+          'Sent via website form. Everything below was written by a visitor.',
+          '',
+          'Name: ' + (name || '(not given)'),
+          'Email: ' + email,
+          'Topic: ' + topic,
+          '',
+          message,
+        ].join('\n'),
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
   return { ok: true };
 }
 
 function unlock(req) {
-  if (!allowed('unlock-failures', LIMITS.unlockFailures)) return { ok: false, error: 'busy' };
+  if (!take('unlock', LIMITS.unlock)) return { ok: false, error: 'busy' };
 
   const code = clean(req.code, 100);
   const who = clean(req.who, 120);
   const result = checkPasscode(code);
-  tab('Unlocks').appendRow([new Date(), code, who, result].map(cell));
 
-  if (result !== 'ok') {
-    count('unlock-failures', LIMITS.unlockFailures);
-    return { ok: false, error: 'denied' };
-  }
+  // Only log the code when it matches a real one, so mistyped passwords aren't stored.
+  tab('Unlocks').appendRow([new Date(), result === 'wrong' ? '' : code, who, result].map(cell));
+
+  if (result !== 'ok') return { ok: false, error: 'denied' };
   return { ok: true, html: HtmlService.createHtmlOutputFromFile('Resume').getContent() };
 }
 
 function vote(req) {
-  const poll = clean(req.poll, 40);
+  const poll = POLLS.indexOf(req.poll) >= 0 ? req.poll : '';
   const version = req.version === 'a' || req.version === 'b' ? req.version : '';
   const answer = req.answer === 'yes' || req.answer === 'no' ? req.answer : '';
-  if (!/^[a-z0-9-]+$/.test(poll) || !version || !answer) return { ok: false, error: 'invalid' };
-  if (!allowed('vote', LIMITS.vote)) return { ok: false, error: 'busy' };
-  count('vote', LIMITS.vote);
+  if (!poll || !version || !answer) return { ok: false, error: 'invalid' };
+  if (!take('vote', LIMITS.vote)) return { ok: false, error: 'busy' };
 
   tab('Votes').appendRow([new Date(), poll, version, answer]);
   CacheService.getScriptCache().remove('results:' + poll);
@@ -106,9 +120,8 @@ function vote(req) {
 }
 
 function results(req) {
-  const poll = clean(req.poll, 40);
-  if (!/^[a-z0-9-]+$/.test(poll)) return { ok: false, error: 'invalid' };
-  return { ok: true, results: tally(poll) };
+  if (POLLS.indexOf(req.poll) < 0) return { ok: false, error: 'invalid' };
+  return { ok: true, results: tally(req.poll) };
 }
 
 // Helpers
@@ -116,7 +129,7 @@ function results(req) {
 function checkPasscode(code) {
   if (!code) return 'wrong';
   const rows = tab('Passcodes').getDataRange().getValues().slice(1);
-  const row = rows.find((r) => String(r[0]).trim().toLowerCase() === code.toLowerCase());
+  const row = rows.find((r) => String(r[0]).trim() !== '' && String(r[0]).trim().toLowerCase() === code.toLowerCase());
   if (!row) return 'wrong';
 
   const active = row[3] === true || /^(true|yes|y|1)$/i.test(String(row[3]).trim());
@@ -144,13 +157,21 @@ function tally(poll) {
   return counts;
 }
 
-function allowed(key, limit) {
-  return Number(CacheService.getScriptCache().get(key) || 0) < limit.count;
-}
-
-function count(key, limit) {
-  const cache = CacheService.getScriptCache();
-  cache.put(key, String(Number(cache.get(key) || 0) + 1), limit.seconds);
+// Counts one use against a fixed time window. Returns false once the window is full.
+function take(name, limit) {
+  const window = Math.floor(Date.now() / 1000 / limit.seconds);
+  const key = 'limit:' + name + ':' + window;
+  const lock = LockService.getScriptLock();
+  lock.waitLock(5000);
+  try {
+    const cache = CacheService.getScriptCache();
+    const used = Number(cache.get(key) || 0);
+    if (used >= limit.count) return false;
+    cache.put(key, String(used + 1), limit.seconds);
+    return true;
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 function clean(value, max, multiline) {

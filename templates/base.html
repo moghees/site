@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="{{ get_url(path='style.css', cachebust=true) }}">
 <script src="{{ get_url(path='site.js', cachebust=true) }}" defer></script>
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "Person", "name": {{ config.extra.name | json_encode | safe }}, "jobTitle": {{ config.extra.job_title | json_encode | safe }}, "url": {{ config.base_url | json_encode | safe }}, "sameAs": [{{ config.extra.github | json_encode | safe }}]}
+{"@context": "https://schema.org", "@type": "Person", "name": {{ config.extra.name | json_encode | replace(from="<", to="\\u003c") | safe }}, "jobTitle": {{ config.extra.job_title | json_encode | replace(from="<", to="\\u003c") | safe }}, "url": {{ config.base_url | json_encode | replace(from="<", to="\\u003c") | safe }}, "sameAs": [{{ config.extra.github | json_encode | replace(from="<", to="\\u003c") | safe }}]}
 </script>
 </head>
 <body class="{% block body_class %}{% endblock %}" data-api="{{ config.extra.api_url }}">

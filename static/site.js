@@ -1,4 +1,10 @@
 (() => {
+  // Refuse to be shown inside another site's frame.
+  if (window.top !== window.self) {
+    document.body.hidden = true;
+    return;
+  }
+
   const api = document.body.dataset.api;
 
   const year = document.getElementById('year');
