@@ -4,10 +4,7 @@ description = "I build products that help merchants sell online. Product manager
 
 [extra]
 headline = "Hello, world."
-intro = [
-  "I build products that help merchants sell online.",
-  "Product manager on a mission to make the internet a better marketplace, for people and agents.",
-]
+intro = "I build products that help merchants sell online. Product manager on a mission to make the internet a better marketplace, for people and agents."
 
 [[extra.projects]]
 name = "Seller margin calculator"
