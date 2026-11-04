@@ -2,8 +2,6 @@
 
 > {{ home.description }}
 
-{{ home.extra.headline }} {{ home.extra.intro }}
-
 ## Projects
 
 {% for p in home.extra.projects %}- [{{ p.name }}]({{ p.url }}): {{ p.summary }}

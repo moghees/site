@@ -83,17 +83,17 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
 .label { font-size: 15px; font-weight: 500; color: var(--ink-2); margin: 0 0 14px; }
 .fine { font-size: 13px; color: var(--ink-2); margin: 12px 0 0; }
 
-.intro { padding: 40px; }
+.intro { padding: 48px; }
 .intro h1 {
-  font-size: clamp(26px, 3.4vw, 34px);
-  line-height: 1.2;
+  font-size: 56px;
+  line-height: 1.05;
   font-weight: 600;
-  letter-spacing: -0.02em;
-  max-width: 26ch;
-  margin: 0 0 16px;
+  letter-spacing: -0.035em;
+  margin: 0 0 20px;
   text-wrap: balance;
 }
-.intro p { margin: 0; max-width: 60ch; color: var(--ink-2); }
+.intro p { margin: 0; max-width: 32em; font-size: 22px; line-height: 1.45; text-wrap: pretty; }
+.intro p + p { margin-top: 0.4em; }
 
 .projects ul { list-style: none; margin: 0; padding: 0; }
 .projects li {
@@ -189,6 +189,8 @@ textarea { resize: vertical; min-height: 120px; }
   .grid, .contact-grid { grid-template-columns: minmax(0, 1fr); }
   .span-3, .span-2, #contact-form { grid-column: auto; }
   .card, .intro, .prose { padding: 24px; }
+  .intro h1 { font-size: 40px; }
+  .intro p { font-size: 19px; }
   .pair { grid-template-columns: minmax(0, 1fr); }
   .band { padding: 40px 0 32px; }
 }

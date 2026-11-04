@@ -1,6 +1,6 @@
 base_url = "https://moghees.com"
 title = "Muhammad Moghees"
-description = "Product lead in e-commerce and marketplaces."
+description = "Product manager in e-commerce, marketplaces and payments."
 default_language = "en"
 
 compile_sass = false
@@ -12,7 +12,7 @@ feed_filenames = ["llms.txt"]
 
 [extra]
 name = "Muhammad Moghees"
-job_title = "Product lead, e-commerce and marketplaces"
+job_title = "Product manager in e-commerce, marketplaces and payments"
 github = "https://github.com/moghees"
 
 # Google Calendar booking page. Leave empty to hide the link.
