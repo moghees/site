@@ -51,11 +51,15 @@
           <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="actions">
             <button class="send" type="submit" disabled>Send</button>
+            <p class="status" role="status"></p>
             {% if config.extra.booking_url %}<a href="{{ config.extra.booking_url }}">Or book a 20-minute chat ›</a>{% endif %}
           </div>
-          <p class="status" role="status"></p>
           <noscript><p class="status">The form needs JavaScript.{% if config.extra.booking_url %} You can <a href="{{ config.extra.booking_url }}">book a chat</a> instead.{% endif %}</p></noscript>
         </form>
+        <div class="sent" tabindex="-1" hidden>
+          <p class="sent-title">Message sent</p>
+          <p class="sent-note">Thanks for reaching out. I’ll reply by email.</p>
+        </div>
       </div>
     </section>
   </main>

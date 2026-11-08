@@ -66,8 +66,11 @@
           elapsed: Date.now() - started,
         });
         if (res.ok) {
-          form.reset();
-          status.textContent = 'Thanks, your message is on its way. I’ll reply by email.';
+          const sent = document.querySelector('.sent');
+          sent.querySelector('.sent-note').textContent = 'Thanks for reaching out. I’ll reply to ' + email + '.';
+          form.hidden = true;
+          sent.hidden = false;
+          sent.focus();
         } else if (res.error === 'busy') {
           status.textContent = 'Too many messages right now. Please try again later.';
         } else {

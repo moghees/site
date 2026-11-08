@@ -165,7 +165,10 @@ textarea { resize: vertical; min-height: 120px; }
   cursor: pointer;
 }
 .send:disabled { opacity: 0.6; cursor: default; }
-.status { font-size: var(--meta); color: var(--ink-2); min-height: 1.4em; margin: 0; }
+.status { font-size: var(--meta); color: var(--ink-2); margin: 0; }
+.sent { grid-column: span 2; outline: none; }
+.sent-title { font-size: var(--lead); font-weight: 600; margin: 0 0 4px; }
+.sent-note { margin: 0; color: var(--ink-2); }
 
 /* Text pages and résumé */
 
@@ -180,7 +183,7 @@ textarea { resize: vertical; min-height: 120px; }
 
 @media (max-width: 760px) {
   .grid, .contact-grid { grid-template-columns: minmax(0, 1fr); }
-  .span-3, .span-2, #contact-form { grid-column: auto; }
+  .span-3, .span-2, #contact-form, .sent { grid-column: auto; }
   :root { --pad: 24px; }
   .br { display: none; }
 }
