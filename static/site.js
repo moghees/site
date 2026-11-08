@@ -28,10 +28,6 @@
     try { localStorage.setItem(key, value); } catch {}
   }
 
-  function plain(text) {
-    return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  }
-
   // Contact form
 
   const form = document.getElementById('contact-form');
@@ -41,10 +37,8 @@
     const button = form.querySelector('button');
     button.disabled = false;
 
-    const wanted = new URLSearchParams(location.search).get('topic');
-    if (wanted) {
-      const match = [...form.topic.options].find((o) => plain(o.text).includes(plain(wanted)));
-      if (match) form.topic.value = match.value;
+    if (new URLSearchParams(location.search).get('topic') === 'resume') {
+      form.message.value = 'Hi, could I have the passcode for your résumé?';
     }
 
     form.addEventListener('submit', async (e) => {
@@ -66,9 +60,7 @@
       status.textContent = 'Sending…';
       try {
         const res = await post('contact', {
-          name: d.name.trim(),
           email,
-          topic: d.topic,
           message,
           website: d.website,
           elapsed: Date.now() - started,

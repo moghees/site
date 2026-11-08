@@ -79,7 +79,6 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
   border-top: 1px solid var(--line);
   padding-top: 16px;
 }
-.home .site-foot { background: var(--card); padding-top: 0; }
 
 /* Cards */
 
@@ -134,15 +133,12 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
 
 /* Contact */
 
-.band { background: var(--card); margin-top: 40px; padding: 56px 0 40px; }
 .contact-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
-.contact-copy { padding: 0 4px; }
 .contact-copy h2 { font-size: var(--title); font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; margin: 0 0 10px; }
-.contact-copy p { margin: 0; color: var(--ink-2); }
+.contact-copy p { margin: 0; color: var(--ink-2); text-wrap: pretty; }
 
 form { display: grid; gap: 10px; }
 #contact-form { grid-column: span 2; }
-.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 input, select, textarea {
   width: 100%;
   background: var(--field);
@@ -187,8 +183,6 @@ textarea { resize: vertical; min-height: 120px; }
   .span-3, .span-2, #contact-form { grid-column: auto; }
   :root { --pad: 24px; }
   .br { display: none; }
-  .pair { grid-template-columns: minmax(0, 1fr); }
-  .band { padding: 40px 0 32px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -21,14 +21,6 @@ booking_url = ""
 # Apps Script web app URL (ends in /exec). Leave empty until the backend is deployed.
 api_url = "https://script.google.com/macros/s/AKfycbxe06Kocnl9oeShr8QxQy3KSL5TfpYSnFMuVxG1eVgkwT68j3hSeCiZZnGxnpi5bpZK/exec"
 
-contact_topics = [
-  "Hiring",
-  "Collaborating on a project",
-  "Reference request",
-  "Resume passcode",
-  "Just saying hi",
-]
-
 [extra.poll]
 id = "agent-framing-1"
 label = "Quick question"

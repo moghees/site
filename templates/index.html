@@ -38,32 +38,26 @@
       <p class="fine poll-status" role="status"></p>
       <noscript><p class="fine">Voting needs JavaScript.</p></noscript>
     </section>
+
+    <section class="card span-3" id="contact" aria-labelledby="contact-h">
+      <div class="contact-grid">
+        <div class="contact-copy">
+          <h2 id="contact-h">Let’s talk shop</h2>
+          <p>Hiring, building something for merchants, or just saying hi?</p>
+        </div>
+        <form id="contact-form" novalidate>
+          <input name="email" type="email" placeholder="Email" aria-label="Email" autocomplete="email" maxlength="200" required>
+          <textarea name="message" placeholder="Message" aria-label="Message" maxlength="5000" required></textarea>
+          <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="actions">
+            <button class="send" type="submit" disabled>Send</button>
+            {% if config.extra.booking_url %}<a href="{{ config.extra.booking_url }}">Or book a 20-minute chat ›</a>{% endif %}
+          </div>
+          <p class="status" role="status"></p>
+          <noscript><p class="status">The form needs JavaScript.{% if config.extra.booking_url %} You can <a href="{{ config.extra.booking_url }}">book a chat</a> instead.{% endif %}</p></noscript>
+        </form>
+      </div>
+    </section>
   </main>
 </div>
-
-<section class="band" id="contact" aria-labelledby="contact-h">
-  <div class="wrap contact-grid">
-    <div class="contact-copy">
-      <h2 id="contact-h">Let's talk</h2>
-      <p>Working on something in commerce, or want to compare notes on sellers?</p>
-    </div>
-    <form id="contact-form" novalidate>
-      <div class="pair">
-        <input name="name" placeholder="Name" aria-label="Name" autocomplete="name" maxlength="100">
-        <input name="email" type="email" placeholder="Email" aria-label="Email" autocomplete="email" maxlength="200" required>
-      </div>
-      <select name="topic" aria-label="Topic">
-        {% for t in config.extra.contact_topics %}<option>{{ t }}</option>{% endfor %}
-      </select>
-      <textarea name="message" placeholder="Message" aria-label="Message" maxlength="5000" required></textarea>
-      <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <div class="actions">
-        <button class="send" type="submit" disabled>Send</button>
-        {% if config.extra.booking_url %}<a href="{{ config.extra.booking_url }}">Or book a 20-minute chat ›</a>{% endif %}
-      </div>
-      <p class="status" role="status"></p>
-      <noscript><p class="status">The form needs JavaScript.{% if config.extra.booking_url %} You can <a href="{{ config.extra.booking_url }}">book a chat</a> instead.{% endif %}</p></noscript>
-    </form>
-  </div>
-</section>
 {% endblock %}
