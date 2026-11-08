@@ -23,8 +23,9 @@ api_url = "https://script.google.com/macros/s/AKfycbxe06Kocnl9oeShr8QxQy3KSL5Tfp
 
 [extra.poll]
 id = "agent-framing-1"
-a = "An AI agent gets 95% of orders right. Let it shop for you?"
-b = "An AI agent gets 1 in 20 orders wrong. Let it shop for you?"
+a = "An AI agent gets 95% of orders right. Let it shop?"
+b = "An AI agent gets 1 in 20 orders wrong. Let it shop?"
 a_short = "95% right"
 b_short = "1 in 20 wrong"
+note = "A tiny experiment"
 min_votes = 100

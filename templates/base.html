@@ -28,9 +28,7 @@
   <header class="site-head">
     <a class="name" href="{{ get_url(path='@/_index.md') }}">{{ config.extra.name }}</a>
     <nav aria-label="Main">
-      <a href="{{ get_url(path='@/_index.md') }}#projects">Projects</a>
       <a href="{{ get_url(path='@/resume.md') }}"{% if current_path == "/resume/" %} aria-current="page"{% endif %}>Resume</a>
-      <a href="{{ get_url(path='@/_index.md') }}#contact">Contact</a>
     </nav>
   </header>
 </div>

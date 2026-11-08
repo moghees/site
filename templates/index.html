@@ -20,15 +20,21 @@
           <a href="{{ p.url }}">GitHub ›</a>
         </li>
         {% endfor %}
+        <li id="poll" data-poll="{{ poll.id }}" data-min="{{ poll.min_votes }}" data-a-short="{{ poll.a_short }}" data-b-short="{{ poll.b_short }}">
+          <div class="what"><div class="poll-q" data-a="{{ poll.a }}" data-b="{{ poll.b }}">{{ poll.a }}</div><span class="poll-status" role="status">{{ poll.note }}</span></div>
+          <div class="opts">
+            <button class="opt" type="button" data-answer="yes" disabled>Yes</button>
+            <button class="opt" type="button" data-answer="no" disabled>No</button>
+          </div>
+        </li>
       </ul>
     </section>
 
     <section class="card contact" id="contact" aria-labelledby="contact-h">
       <h2 class="label" id="contact-h">Let’s talk shop</h2>
-      <p class="contact-line">Building something for merchants, or just saying hi?</p>
       <form id="contact-form" novalidate>
         <input name="email" type="email" placeholder="Email" aria-label="Email" autocomplete="email" maxlength="200" required>
-        <textarea name="message" placeholder="Message" aria-label="Message" maxlength="5000" required></textarea>
+        <textarea name="message" placeholder="What are you building?" aria-label="Message" maxlength="5000" required></textarea>
         <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="actions">
           <button class="send" type="submit" disabled>Send</button>
@@ -42,16 +48,6 @@
         <p class="sent-note">Thanks for reaching out. I’ll reply by email.</p>
         <p class="receipt">Receipt · 1 message · Total $0.00</p>
       </div>
-    </section>
-
-    <section class="card span-2 poll" id="poll" aria-labelledby="poll-q" data-poll="{{ poll.id }}" data-min="{{ poll.min_votes }}" data-a-short="{{ poll.a_short }}" data-b-short="{{ poll.b_short }}">
-      <p class="poll-q" id="poll-q"><strong>P.S.</strong> <span data-a="{{ poll.a }}" data-b="{{ poll.b }}">{{ poll.a }}</span></p>
-      <div class="opts">
-        <button class="opt" type="button" data-answer="yes" disabled>Yes</button>
-        <button class="opt" type="button" data-answer="no" disabled>No</button>
-      </div>
-      <p class="poll-status" role="status"></p>
-      <noscript><p class="poll-status">Voting needs JavaScript.</p></noscript>
     </section>
   </main>
 </div>
