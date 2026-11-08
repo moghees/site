@@ -1,10 +1,13 @@
 +++
 title = "Hello World"
-description = "I'm a product manager on a mission to make the internet a better marketplace. I build e-commerce products for merchants and their agents."
+description = "I’m a product manager on a mission to build useful commerce products for merchants selling all over the internet."
 
 [extra]
 headline = "Hello, world."
-intro = "I'm a product manager on a mission to make the internet a better marketplace. I build e-commerce products for merchants and their agents."
+intro = [
+  "I’m a product manager on a mission to build useful commerce products",
+  "for merchants selling all over the internet.",
+]
 
 [[extra.projects]]
 name = "Seller margin calculator"

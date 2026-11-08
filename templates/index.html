@@ -8,7 +8,7 @@
   <main class="grid">
     <section class="card span-3 intro" aria-label="Introduction">
       <h1>{{ section.extra.headline }}</h1>
-      <p>{{ section.extra.intro }}</p>
+      <p>{% for part in section.extra.intro %}{{ part }}{% if not loop.last %} <br class="br">{% endif %}{% endfor %}</p>
     </section>
 
     <section class="card span-2 projects" id="projects" aria-labelledby="projects-label">

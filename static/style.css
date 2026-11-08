@@ -91,7 +91,7 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
 .fine { font-size: var(--small); color: var(--ink-2); margin: 12px 0 0; }
 
 .intro h1 { font-size: var(--display); line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 12px; }
-.intro p { margin: 0; max-width: 34em; font-size: var(--lead); line-height: 1.4; text-wrap: pretty; }
+.intro p { margin: 0; max-width: 36em; font-size: var(--lead); line-height: 1.4; text-wrap: pretty; }
 
 .projects ul { list-style: none; margin: 0; padding: 0; }
 .projects li {
@@ -186,6 +186,7 @@ textarea { resize: vertical; min-height: 120px; }
   .grid, .contact-grid { grid-template-columns: minmax(0, 1fr); }
   .span-3, .span-2, #contact-form { grid-column: auto; }
   :root { --pad: 24px; }
+  .br { display: none; }
   .pair { grid-template-columns: minmax(0, 1fr); }
   .band { padding: 40px 0 32px; }
 }
