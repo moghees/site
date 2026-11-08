@@ -94,10 +94,9 @@
   if (poll) {
     const id = poll.dataset.poll;
     const min = Number(poll.dataset.min) || 100;
-    const question = poll.querySelector('.poll-q');
+    const question = poll.querySelector('[data-a]');
     const opts = poll.querySelector('.opts');
     const buttons = [...opts.querySelectorAll('button')];
-    const results = poll.querySelector('.results');
     const status = poll.querySelector('.poll-status');
 
     let version = load(`poll:${id}:version`);
@@ -105,31 +104,29 @@
       version = Math.random() < 0.5 ? 'a' : 'b';
       save(`poll:${id}:version`, version);
     }
+    const other = version === 'a' ? 'b' : 'a';
+    const otherShort = poll.dataset[other + 'Short'];
     question.textContent = question.dataset[version];
     buttons.forEach((b) => (b.disabled = false));
 
     const show = (counts) => {
-      opts.hidden = true;
-      results.hidden = false;
-      const totals = {};
+      const n = {};
+      const pct = {};
       for (const v of ['a', 'b']) {
         const c = counts[v] || { yes: 0, no: 0 };
-        const n = c.yes + c.no;
-        const pct = n ? Math.round((100 * c.yes) / n) : 0;
-        const bar = results.querySelector(`.bar[data-version="${v}"]`);
-        bar.classList.toggle('mine', v === version);
-        bar.querySelector('.fill').style.width = pct + '%';
-        bar.querySelector('.pct').textContent = pct + '% yes';
-        totals[v] = n;
+        n[v] = c.yes + c.no;
+        pct[v] = n[v] ? Math.round((100 * c.yes) / n[v]) : 0;
       }
-      status.textContent = totals.a < min || totals.b < min
-        ? `Too early to call: ${totals.a} and ${totals.b} votes so far. Yours is in bold.`
-        : `${totals.a + totals.b} votes. Yours is in bold.`;
+      const twist = document.createElement('strong');
+      twist.textContent = 'Plot twist:';
+      const rest = n.a < min || n.b < min
+        ? ` half of visitors saw “${otherShort}” instead. Results at ${min} votes.`
+        : ` others saw “${otherShort}.” Your group: ${pct[version]}% yes. Theirs: ${pct[other]}%.`;
+      status.replaceChildren(twist, rest);
     };
 
     if (load(`poll:${id}:voted`)) {
       opts.hidden = true;
-      status.textContent = 'Thanks for voting.';
       post('results', { poll: id })
         .then((res) => res.ok && show(res.results))
         .catch(() => {});
@@ -138,15 +135,19 @@
     for (const button of buttons) {
       button.addEventListener('click', async () => {
         buttons.forEach((b) => (b.disabled = true));
-        status.textContent = 'Saving your answer…';
+        status.textContent = 'Saving';
+        status.classList.add('busy');
         try {
           const res = await post('vote', { poll: id, version, answer: button.dataset.answer });
           if (!res.ok) throw new Error(res.error);
           save(`poll:${id}:voted`, button.dataset.answer);
+          opts.hidden = true;
           show(res.results);
         } catch {
           buttons.forEach((b) => (b.disabled = false));
           status.textContent = api ? 'Couldn’t save your answer. Try again?' : 'Voting opens soon.';
+        } finally {
+          status.classList.remove('busy');
         }
       });
     }
