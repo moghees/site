@@ -57,7 +57,8 @@
       }
 
       button.disabled = true;
-      status.textContent = 'Sending…';
+      status.textContent = 'Sending';
+      status.classList.add('busy');
       try {
         const res = await post('contact', {
           email,
@@ -81,6 +82,7 @@
           ? 'Couldn’t send. Check your connection and try again.'
           : 'The form isn’t connected yet.';
       } finally {
+        status.classList.remove('busy');
         button.disabled = false;
       }
     });
