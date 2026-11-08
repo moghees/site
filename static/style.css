@@ -102,12 +102,13 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
   border-top: 1px solid var(--line);
 }
 .projects li:last-child { border-bottom: 1px solid var(--line); }
-.projects .what { min-width: 0; }
-.projects .what span { display: block; font-size: var(--meta); color: var(--ink-2); }
+.what { min-width: 0; }
+.what span { display: block; font-size: var(--meta); color: var(--ink-2); }
 .projects a { font-size: var(--meta); white-space: nowrap; }
 
 /* Poll */
 
+.poll { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
 .poll-q { color: var(--ink); }
 .opts { display: flex; gap: 6px; }
 .opt {
@@ -126,7 +127,7 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
 
 /* Contact */
 
-.contact { display: flex; flex-direction: column; }
+.contact { display: flex; flex-direction: column; grid-row: span 2; }
 .contact form { flex: 1; grid-template-rows: auto 1fr auto; }
 
 form { display: grid; gap: 10px; }
@@ -193,6 +194,7 @@ textarea { resize: vertical; min-height: 120px; }
 @media (max-width: 760px) {
   .grid { grid-template-columns: minmax(0, 1fr); }
   .span-3, .span-2 { grid-column: auto; }
+  .contact { grid-row: auto; }
   :root { --pad: 24px; }
   .br { display: none; }
 }
