@@ -120,9 +120,10 @@
       const twist = document.createElement('strong');
       twist.textContent = 'Plot twist:';
       const rest = n.a < min || n.b < min
-        ? ` half of visitors saw “${otherShort}” instead. Results at ${min} votes.`
-        : ` others saw “${otherShort}.” Your group: ${pct[version]}% yes. Theirs: ${pct[other]}%.`;
+        ? ` others saw “${otherShort}.” Results at ${min} votes.`
+        : ` others saw “${otherShort}.” You: ${pct[version]}% yes. Them: ${pct[other]}%.`;
       status.replaceChildren(twist, rest);
+      poll.classList.add('done');
     };
 
     if (load(`poll:${id}:voted`)) {
