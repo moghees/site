@@ -38,7 +38,7 @@
     button.disabled = false;
 
     if (new URLSearchParams(location.search).get('topic') === 'resume') {
-      form.message.value = 'Hi, could I have the passcode for your résumé?';
+      form.message.value = 'Hi, could I have the passcode for your resume?';
     }
 
     form.addEventListener('submit', async (e) => {
