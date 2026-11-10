@@ -143,7 +143,8 @@
         yes += counts[v].yes;
         all += counts[v].yes + counts[v].no;
       }
-      line.innerHTML = '<svg class="bot" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 2.5V4.5"/><rect x="3" y="4.5" width="14" height="12" rx="3.5"/>' + face[current] + '</svg>';
+      poll.querySelector('.bot-face').innerHTML = face[current];
+      line.textContent = '';
       const label = document.createElement('strong');
       label.textContent = current === 'yes' ? 'Hired.' : 'Not hired.';
       line.append(label);
