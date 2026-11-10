@@ -22,6 +22,6 @@ booking_url = ""
 api_url = "https://script.google.com/macros/s/AKfycbxe06Kocnl9oeShr8QxQy3KSL5TfpYSnFMuVxG1eVgkwT68j3hSeCiZZnGxnpi5bpZK/exec"
 
 [extra.poll]
-id = "agent-hire-1"
+id = "agent-framing-1"
 a = "Would you hire an AI agent that gets 19 in 20 orders right?"
 b = "Would you hire an AI agent that gets 1 in 20 orders wrong?"
