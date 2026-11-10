@@ -79,6 +79,9 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
   border-top: 1px solid var(--line);
   padding-top: 16px;
 }
+.mark { vertical-align: -1px; }
+.mark-face { fill: var(--ink); }
+.mark-depth { fill: var(--blue); }
 
 /* Cards */
 
