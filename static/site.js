@@ -106,10 +106,20 @@
       version = Math.random() < 0.5 ? 'a' : 'b';
       save(`poll:${id}:version`, version);
     }
+    let voter = load('poll:voter');
+    if (!/^[a-z0-9]{8,32}$/.test(voter || '')) {
+      voter = [...crypto.getRandomValues(new Uint8Array(12))].map((n) => (n % 36).toString(36)).join('');
+      save('poll:voter', voter);
+    }
     question.textContent = question.dataset[version];
 
     let current = load(`poll:${id}:voted`);
-    let saving = false;
+    let counts = null;
+    let pending = 0;
+    try {
+      const kept = JSON.parse(load(`poll:${id}:counts`));
+      if (kept && kept.a && kept.b) counts = kept;
+    } catch {}
 
     const mark = (answer) => {
       for (const b of buttons) {
@@ -119,55 +129,83 @@
         b.setAttribute('aria-pressed', String(Boolean(answer) && on));
       }
     };
-    const show = (counts) => {
+    const show = () => {
+      if (!current) return;
+      if (!counts) {
+        line.textContent = '';
+        line.classList.add('busy');
+        return;
+      }
+      line.classList.remove('busy');
       let yes = 0;
       let all = 0;
       for (const v of ['a', 'b']) {
-        const c = counts[v] || { yes: 0, no: 0 };
-        yes += c.yes;
-        all += c.yes + c.no;
+        yes += counts[v].yes;
+        all += counts[v].yes + counts[v].no;
       }
-      line.classList.remove('busy');
-      if (!all || !current) return;
       line.innerHTML = '<svg class="bot" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 2.5V4.5"/><rect x="3" y="4.5" width="14" height="12" rx="3.5"/>' + face[current] + '</svg>';
       const label = document.createElement('strong');
       label.textContent = current === 'yes' ? 'Hired.' : 'Not hired.';
-      line.append(label, ` ${Math.round((100 * yes) / all)}% of people would hire this AI agent.`);
+      line.append(label);
+      if (all) line.append(` ${Math.round((100 * yes) / all)}% of people would hire this AI agent.`);
     };
-    const wait = () => {
-      line.textContent = '';
-      line.classList.add('busy');
+    const tidy = (c) => {
+      const out = {};
+      for (const v of ['a', 'b']) out[v] = { yes: Math.max(0, (c && c[v] && c[v].yes) || 0), no: Math.max(0, (c && c[v] && c[v].no) || 0) };
+      return out;
     };
+    const keep = (c) => {
+      counts = tidy(c);
+      save(`poll:${id}:counts`, JSON.stringify(counts));
+    };
+    if (counts) counts = tidy(counts);
+
+    post('results', { poll: id })
+      .then((res) => {
+        if (res.ok && !pending) {
+          keep(res.results);
+          show();
+        }
+      })
+      .catch(() => {});
 
     buttons.forEach((b) => (b.disabled = false));
     if (current) {
       mark(current);
-      wait();
-      post('results', { poll: id })
-        .then((res) => res.ok && show(res.results))
-        .catch(() => line.classList.remove('busy'));
+      show();
     }
 
     for (const button of buttons) {
       button.addEventListener('click', async () => {
         const answer = button.dataset.answer;
-        if (saving || answer === current) return;
+        if (answer === current) return;
         const previous = current;
-        saving = true;
+        const before = counts && tidy(counts);
+        current = answer;
         mark(answer);
-        wait();
+        if (counts) {
+          counts[version][answer]++;
+          if (previous) counts[version][previous] = Math.max(0, counts[version][previous] - 1);
+        }
+        show();
+        pending++;
         try {
-          const res = await post('vote', { poll: id, version, answer, replaces: previous || undefined });
+          const res = await post('vote', { poll: id, version, answer, voter });
           if (!res.ok) throw new Error(res.error);
-          current = answer;
           save(`poll:${id}:voted`, answer);
-          show(res.results);
+          if (current === answer) {
+            keep(res.results);
+            show();
+          }
         } catch {
-          line.classList.remove('busy');
+          if (current !== answer) return;
+          current = previous;
+          counts = before;
           mark(previous);
+          line.classList.remove('busy');
           line.textContent = api ? 'Couldn’t save your answer. Try again?' : 'Voting opens soon.';
         } finally {
-          saving = false;
+          pending--;
         }
       });
     }

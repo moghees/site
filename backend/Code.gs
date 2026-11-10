@@ -6,7 +6,7 @@ const TABS = {
   Messages: ['Time', 'Name', 'Email', 'Topic', 'Message'],
   Passcodes: ['Passcode', 'Expires', 'Note', 'Active'],
   Unlocks: ['Time', 'Passcode', 'Who', 'Result'],
-  Votes: ['Time', 'Poll', 'Version', 'Answer', 'Replaces'],
+  Votes: ['Time', 'Poll', 'Version', 'Answer', 'Voter'],
 };
 
 // Polls the site is allowed to record. Add a new id here when a new poll goes live.
@@ -111,13 +111,34 @@ function vote(req) {
   const poll = POLLS.indexOf(req.poll) >= 0 ? req.poll : '';
   const version = req.version === 'a' || req.version === 'b' ? req.version : '';
   const answer = req.answer === 'yes' || req.answer === 'no' ? req.answer : '';
-  const replaces = req.replaces === 'yes' || req.replaces === 'no' ? req.replaces : '';
-  if (!poll || !version || !answer || replaces === answer) return { ok: false, error: 'invalid' };
+  const voter = typeof req.voter === 'string' && /^[a-z0-9]{8,32}$/.test(req.voter) ? req.voter : '';
+  if (!poll || !version || !answer || !voter) return { ok: false, error: 'invalid' };
   if (!take('vote', LIMITS.vote)) return { ok: false, error: 'busy' };
 
-  tab('Votes').appendRow([new Date(), poll, version, answer, replaces]);
-  CacheService.getScriptCache().remove('results:' + poll);
-  return { ok: true, results: tally(poll) };
+  // One row per voter and poll: a changed answer updates that row.
+  const sheet = tab('Votes');
+  const lock = LockService.getScriptLock();
+  lock.waitLock(5000);
+  try {
+    const rows = sheet.getDataRange().getValues();
+    let found = -1;
+    for (let i = 1; i < rows.length; i++) {
+      if (rows[i][1] === poll && rows[i][4] === voter) { found = i; break; }
+    }
+    const row = [new Date(), poll, version, answer, voter];
+    if (found > 0) {
+      sheet.getRange(found + 1, 1, 1, row.length).setValues([row]);
+      rows[found] = row;
+    } else {
+      sheet.appendRow(row);
+      rows.push(row);
+    }
+    const counts = count(rows, poll);
+    CacheService.getScriptCache().put('results:' + poll, JSON.stringify(counts), 60);
+    return { ok: true, results: counts };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 function results(req) {
@@ -149,17 +170,16 @@ function tally(poll) {
   const cache = CacheService.getScriptCache();
   const cached = cache.get('results:' + poll);
   if (cached) return JSON.parse(cached);
-
-  const counts = { a: { yes: 0, no: 0 }, b: { yes: 0, no: 0 } };
-  for (const [, p, v, a, r] of tab('Votes').getDataRange().getValues().slice(1)) {
-    if (p !== poll || (v !== 'a' && v !== 'b')) continue;
-    if (a === 'yes' || a === 'no') counts[v][a]++;
-    if (r === 'yes' || r === 'no') counts[v][r]--;
-  }
-  for (const v of ['a', 'b']) {
-    for (const k of ['yes', 'no']) counts[v][k] = Math.max(0, counts[v][k]);
-  }
+  const counts = count(tab('Votes').getDataRange().getValues(), poll);
   cache.put('results:' + poll, JSON.stringify(counts), 60);
+  return counts;
+}
+
+function count(rows, poll) {
+  const counts = { a: { yes: 0, no: 0 }, b: { yes: 0, no: 0 } };
+  for (const [, p, v, a] of rows.slice(1)) {
+    if (p === poll && (v === 'a' || v === 'b') && (a === 'yes' || a === 'no')) counts[v][a]++;
+  }
   return counts;
 }
 
