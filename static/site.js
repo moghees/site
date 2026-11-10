@@ -95,7 +95,11 @@
     const id = poll.dataset.poll;
     const question = poll.querySelector('.poll-q');
     const buttons = [...poll.querySelectorAll('.opt')];
-    const result = poll.querySelector('.poll-result');
+    const line = poll.querySelector('.poll-line');
+    const face = {
+      yes: '<path d="M6.5 9.5q1-1.2 2 0M11.5 9.5q1-1.2 2 0"/><path d="M7.5 12.5q2.5 2 5 0"/>',
+      no: '<path d="M7.5 9.2v.6M12.5 9.2v.6"/><path d="M7.5 13.6q2.5-2 5 0"/>',
+    };
 
     let version = load(`poll:${id}:version`);
     if (version !== 'a' && version !== 'b') {
@@ -104,11 +108,15 @@
     }
     question.textContent = question.dataset[version];
 
+    let current = load(`poll:${id}:voted`);
+    let saving = false;
+
     const mark = (answer) => {
       for (const b of buttons) {
-        b.disabled = true;
-        b.classList.toggle('pick', b.dataset.answer === answer);
-        b.classList.toggle('dim', b.dataset.answer !== answer);
+        const on = b.dataset.answer === answer;
+        b.classList.toggle('pick', Boolean(answer) && on);
+        b.classList.toggle('dim', Boolean(answer) && !on);
+        b.setAttribute('aria-pressed', String(Boolean(answer) && on));
       }
     };
     const show = (counts) => {
@@ -119,38 +127,47 @@
         yes += c.yes;
         all += c.yes + c.no;
       }
-      result.classList.remove('busy');
-      if (all) result.textContent = `${Math.round((100 * yes) / all)}% of people would hire this AI agent.`;
+      line.classList.remove('busy');
+      if (!all || !current) return;
+      line.innerHTML = '<svg class="bot" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 2.5V4.5"/><rect x="3" y="4.5" width="14" height="12" rx="3.5"/>' + face[current] + '</svg>';
+      const label = document.createElement('strong');
+      label.textContent = current === 'yes' ? 'Hired.' : 'Not hired.';
+      line.append(label, ` ${Math.round((100 * yes) / all)}% of people would hire this AI agent.`);
+    };
+    const wait = () => {
+      line.textContent = '';
+      line.classList.add('busy');
     };
 
-    const voted = load(`poll:${id}:voted`);
-    if (voted) {
-      mark(voted);
+    buttons.forEach((b) => (b.disabled = false));
+    if (current) {
+      mark(current);
+      wait();
       post('results', { poll: id })
         .then((res) => res.ok && show(res.results))
-        .catch(() => {});
-    } else {
-      buttons.forEach((b) => (b.disabled = false));
+        .catch(() => line.classList.remove('busy'));
     }
 
     for (const button of buttons) {
       button.addEventListener('click', async () => {
         const answer = button.dataset.answer;
+        if (saving || answer === current) return;
+        const previous = current;
+        saving = true;
         mark(answer);
-        result.textContent = '';
-        result.classList.add('busy');
+        wait();
         try {
-          const res = await post('vote', { poll: id, version, answer });
+          const res = await post('vote', { poll: id, version, answer, replaces: previous || undefined });
           if (!res.ok) throw new Error(res.error);
+          current = answer;
           save(`poll:${id}:voted`, answer);
           show(res.results);
         } catch {
-          result.classList.remove('busy');
-          for (const b of buttons) {
-            b.disabled = false;
-            b.classList.remove('pick', 'dim');
-          }
-          result.textContent = api ? 'Couldn’t save your answer. Try again?' : 'Voting opens soon.';
+          line.classList.remove('busy');
+          mark(previous);
+          line.textContent = api ? 'Couldn’t save your answer. Try again?' : 'Voting opens soon.';
+        } finally {
+          saving = false;
         }
       });
     }
