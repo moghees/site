@@ -18,9 +18,4 @@ url = "https://github.com/yourname/seller-margin"
 name = "Marketplace liquidity explainer"
 summary = "How buyers and sellers find each other, interactively"
 url = "https://github.com/yourname/liquidity"
-
-[[extra.projects]]
-name = "Catalogue cleaner"
-summary = "Tidies messy product listings in bulk"
-url = "https://github.com/yourname/catalogue-cleaner"
 +++
