@@ -148,7 +148,7 @@
       const label = document.createElement('strong');
       label.textContent = current === 'yes' ? 'Hired.' : 'Not hired.';
       line.append(label);
-      if (all) line.append(` ${Math.round((100 * yes) / all)}% of people would hire this AI agent.`);
+      if (all) line.append(` ${Math.round((100 * yes) / all)}% would hire this AI agent.`);
     };
     const tidy = (c) => {
       const out = {};
