@@ -4,7 +4,7 @@
 
 ## Projects
 
-{% for p in home.extra.projects %}- [{{ p.name }}]({{ p.url }}): {{ p.summary }}
+{% for p in home.extra.projects %}- {% if p.url %}[{{ p.name }}]({{ p.url }}){% else %}{{ p.name }} ({{ p.status }}){% endif %}: {{ p.summary }}
 {% endfor %}
 ## {{ agents.title }}
 
