@@ -81,7 +81,6 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
   padding-top: 16px;
 }
 .mark-face { fill: var(--mark); }
-.only-small { display: none; }
 .mark-depth { fill: var(--blue); }
 
 /* Home */
@@ -200,15 +199,11 @@ textarea { resize: vertical; min-height: 120px; }
   .site-head { padding: 24px var(--pad); }
   .intro { padding: 16px var(--pad) 48px; }
   .projects ul { grid-template-columns: minmax(0, 1fr); }
-  .foot-links, .nav-contact { display: none; }
-  .only-small { display: inline; }
-  .foot-end { flex: 1 0 100%; display: flex; justify-content: space-between; align-items: center; }
+  nav { gap: 16px; }
+  .foot-links { display: none; }
   .br { display: none; }
   .poll { align-items: center; }
-  .poll-label { flex: 1; }
-  .opts { order: 1; }
-  .poll-q { order: 2; flex-basis: 100%; }
-  .poll-line { order: 3; }
+  .poll-q { flex: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
