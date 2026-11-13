@@ -28,7 +28,7 @@
   <header class="site-head">
     <a class="name" href="{{ get_url(path='@/_index.md') }}">{{ config.extra.name }}</a>
     <nav aria-label="Main">
-      {% if current_path == "/contact/" %}<a href="{{ get_url(path='@/_index.md') }}">← Home</a>{% else %}<a class="nav-contact" href="{{ get_url(path='@/contact.md') }}">Contact</a>{% endif %}
+      <a class="nav-contact" href="{{ get_url(path='@/contact.md') }}"{% if current_path == "/contact/" %} aria-current="page"{% endif %}>Contact</a>
       {% if current_path == "/resume/" %}<a href="{{ get_url(path='@/_index.md') }}">← Home</a>{% else %}<a href="{{ get_url(path='@/resume.md') }}">Resume →</a>{% endif %}
     </nav>
   </header>
@@ -37,7 +37,7 @@
 <footer class="site-foot">
   <div class="wrap"><div class="foot-row">
     <span>© <span id="year">{{ now() | date(format="%Y") }}</span> {{ config.extra.name }} · <a href="{{ config.extra.github }}">GitHub</a></span>
-    <span class="foot-end"><span class="foot-links"><a href="{{ get_url(path='@/agents.md') }}">/agents</a> · <a href="{{ get_url(path='llms.txt') }}">llms.txt</a> · </span><a href="{{ get_url(path='@/contact.md') }}">Contact</a><span class="foot-links"> · </span><svg class="mark" viewBox="0 0 3439 1933" width="17.79" height="10" aria-hidden="true"><path class="mark-face" d="M0 0 1101 0 1478 377 1855 0 2956 0 2956 1933 1844 1933 1844 1266 1478 1632 1112 1266 1112 1933 0 1933Z"/><path class="mark-depth" d="M3149 0 3439 195 3439 1933 3149 1933Z"/></svg></span>
+    <span class="foot-end"><span class="foot-links"><a href="{{ get_url(path='@/agents.md') }}">/agents</a> · <a href="{{ get_url(path='llms.txt') }}">llms.txt</a> · </span><a class="only-small" href="{{ get_url(path='@/contact.md') }}">Contact</a><svg class="mark" viewBox="0 0 3439 1933" width="17.79" height="10" aria-hidden="true"><path class="mark-face" d="M0 0 1101 0 1478 377 1855 0 2956 0 2956 1933 1844 1933 1844 1266 1478 1632 1112 1266 1112 1933 0 1933Z"/><path class="mark-depth" d="M3149 0 3439 195 3439 1933 3149 1933Z"/></svg></span>
   </div></div>
 </footer>
 </body>
