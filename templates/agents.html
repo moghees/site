@@ -3,7 +3,7 @@
 {% block content %}
 {% set x = page.extra %}
 <div class="wrap">
-  <main class="card prose">
+  <main class="prose">
     <h1>{{ page.title }}</h1>
     <p>{{ x.intro }} A plain text version is at <a href="{{ get_url(path='llms.txt') }}">/llms.txt</a>.</p>
 
@@ -14,7 +14,7 @@
     <ul>{% for item in x.not_open_to %}<li>{{ item }}</li>{% endfor %}</ul>
 
     <h2>How to reach me</h2>
-    <p>{{ x.contact }} <a href="{{ get_url(path='@/_index.md') }}#contact">Contact form ›</a></p>
+    <p>{{ x.contact }} <a href="{{ get_url(path='@/contact.md') }}">Contact form ›</a></p>
     <p>{{ x.resume }} <a href="{{ get_url(path='@/resume.md') }}">Resume ›</a></p>
   </main>
 </div>

@@ -10,12 +10,14 @@ intro = [
 ]
 
 [[extra.projects]]
-name = "Seller margin calculator"
-summary = "What a sale really earns after fees and shipping"
-url = "https://github.com/yourname/seller-margin"
+name = "JuiceXO"
+summary = "Improves Shopify stores for international buyers"
+url = "https://app-ochre-six-33.vercel.app/"
+icon = "icons/juicexo.svg"
 
 [[extra.projects]]
-name = "Marketplace liquidity explainer"
-summary = "How buyers and sellers find each other, interactively"
-url = "https://github.com/yourname/liquidity"
+name = "Infinite monkey theorem"
+summary = "A monkey, a typewriter and infinite time"
+url = "https://moghees.com/monkeys/"
+icon = "icons/monkeys.svg"
 +++

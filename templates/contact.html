@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrap">
+  <main class="prose" id="contact">
+    <h1>{{ page.extra.heading }}</h1>
+    <form id="contact-form" class="narrow" novalidate>
+      <input name="email" type="email" placeholder="Email" aria-label="Email" autocomplete="email" maxlength="200" required>
+      <textarea name="message" placeholder="Message" aria-label="Message" maxlength="5000" required></textarea>
+      <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="actions">
+        <button class="send" type="submit" disabled>Send</button>
+        <p class="status" role="status"></p>
+        {% if config.extra.booking_url %}<a href="{{ config.extra.booking_url }}">Or book a 20-minute chat ›</a>{% endif %}
+      </div>
+      <noscript><p class="status">The form needs JavaScript.{% if config.extra.booking_url %} You can <a href="{{ config.extra.booking_url }}">book a chat</a> instead.{% endif %}</p></noscript>
+    </form>
+    <div class="sent" tabindex="-1" hidden>
+      <p class="sent-title">Message sent</p>
+      <p class="sent-note">Thanks for reaching out. I’ll reply by email.</p>
+      <p class="receipt">Receipt · 1 message · Total $0.00</p>
+    </div>
+  </main>
+</div>
+{% endblock %}

@@ -23,7 +23,7 @@ Not open to:
 ## Links
 
 - [Home]({{ get_url(path="@/_index.md") }})
-- [Contact form]({{ get_url(path="@/_index.md") }}#contact)
+- [Contact form]({{ get_url(path="@/contact.md") }})
 - [{{ agents.title }}]({{ get_url(path="@/agents.md") }})
 - [Resume, passcode required]({{ get_url(path="@/resume.md") }})
 - [GitHub]({{ config.extra.github }})
