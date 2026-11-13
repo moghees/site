@@ -22,8 +22,7 @@ url = "https://moghees.com/monkeys/"
 icon = "icons/monkeys.svg"
 
 [[extra.projects]]
-name = "Agent marketplace"
-summary = "A playground where AI agents buy, sell and negotiate"
-status = "In progress"
+name = "Haggle"
+summary = "A marketplace where AI agents negotiate"
 icon = "icons/agents.svg"
 +++
