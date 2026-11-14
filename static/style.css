@@ -1,6 +1,7 @@
 :root {
   --grey: #f5f5f7;
   --card: #fff;
+  --field: var(--card);
   --ink: #1d1d1f;
   --ink-2: #6e6e73;
   --line: #e8e8ed;
@@ -35,6 +36,9 @@
 * { box-sizing: border-box; }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
   background: var(--grey);
   color: var(--ink);
@@ -48,6 +52,7 @@ a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
 [hidden] { display: none !important; }
 
 .wrap {
+  width: 100%;
   max-width: 1080px;
   margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left));
@@ -103,6 +108,13 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
 .what a, .what span { font-size: var(--meta); }
 .what span { color: var(--ink-2); }
 
+.band { margin-top: 64px; background: var(--card); --field: var(--grey); }
+.home .site-foot { flex: 1; background: var(--card); }
+.lower { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 16px; align-items: start; }
+.lower .poll { grid-column: span 2; }
+.contact { padding: 48px var(--pad) 0; }
+.contact textarea { min-height: 0; field-sizing: content; }
+
 /* Poll */
 
 .poll { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; padding: 48px var(--pad) 0; }
@@ -111,7 +123,7 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
 .opt {
   display: inline-flex;
   align-items: center;
-  background: var(--card);
+  background: var(--field);
   color: var(--ink);
   border: 0;
   border-radius: var(--radius-sm);
@@ -136,7 +148,7 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
 form { display: grid; gap: 10px; }
 input, select, textarea {
   width: 100%;
-  background: var(--card);
+  background: var(--field);
   color: var(--ink);
   border: 0;
   border-radius: var(--radius-sm);
@@ -198,8 +210,9 @@ textarea { resize: vertical; min-height: 120px; }
   :root { --pad: 24px; }
   .site-head { padding: 24px var(--pad); }
   .intro { padding: 16px var(--pad) 48px; }
-  .projects ul { grid-template-columns: minmax(0, 1fr); }
-  nav { gap: 16px; }
+  .projects ul, .lower { grid-template-columns: minmax(0, 1fr); }
+  .lower .poll { grid-column: auto; }
+  .band { margin-top: 48px; }
   .foot-links { display: none; }
   .br { display: none; }
   .poll-q { flex: 1; }
