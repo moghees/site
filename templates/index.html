@@ -19,7 +19,7 @@
         <div class="what">
           <h3>{{ p.name }}</h3>
           <p>{{ p.summary }}</p>
-          {% if p.url %}<a href="{{ p.url }}">{{ p.link | default(value="Try it") }} ›</a>{% endif %}
+          {% if p.url %}<a href="{{ p.url }}">{{ p.link | default(value="Try it") }} ›</a>{% elif p.status %}<span>{{ p.status }}</span>{% endif %}
         </div>
       </li>
       {% endfor %}

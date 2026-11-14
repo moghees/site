@@ -16,13 +16,14 @@ url = "https://app-ochre-six-33.vercel.app/"
 icon = "icons/juicexo.svg"
 
 [[extra.projects]]
-name = "Infinite monkey theorem"
+name = "Haggle"
+summary = "A playground where AI agents learn to negotiate"
+status = "In progress"
+icon = "icons/agents.svg"
+
+[[extra.projects]]
+name = "Infinite Monkey"
 summary = "A monkey, a typewriter and infinite time"
 url = "https://moghees.com/monkeys/"
 icon = "icons/monkeys.svg"
-
-[[extra.projects]]
-name = "Haggle"
-summary = "A marketplace where AI agents negotiate"
-icon = "icons/agents.svg"
 +++

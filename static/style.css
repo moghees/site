@@ -100,7 +100,8 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
 .what { min-width: 0; }
 .what h3 { margin: 0; font-size: var(--body); font-weight: 600; line-height: 1.3; }
 .what p { margin: 2px 0 4px; font-size: var(--meta); line-height: 1.35; color: var(--ink-2); }
-.what a { font-size: var(--meta); }
+.what a, .what span { font-size: var(--meta); }
+.what span { color: var(--ink-2); }
 
 /* Poll */
 
