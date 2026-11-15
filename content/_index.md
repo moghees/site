@@ -24,6 +24,6 @@ icon = "icons/agents.svg"
 [[extra.projects]]
 name = "Infinite Monkey"
 summary = "A monkey, a typewriter and infinite time"
-url = "https://moghees.com/monkeys/"
+url = "https://moghees-lab.github.io/infinite-monkey/"
 icon = "icons/monkeys.svg"
 +++
