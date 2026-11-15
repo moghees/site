@@ -174,16 +174,18 @@ textarea { resize: vertical; min-height: 120px; }
 .send:disabled { opacity: 0.6; cursor: default; }
 .status { font-size: var(--meta); color: var(--ink-2); margin: 0; }
 .sent { outline: none; }
-.sent-title { font-size: var(--lead); font-weight: 600; margin: 0 0 4px; }
-.sent-note { margin: 0; color: var(--ink-2); }
+.sent-title { font-size: var(--body); font-weight: 600; margin: 0 0 10px; }
 .receipt {
-  width: fit-content;
-  margin: 14px 0 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  margin: 0;
   padding-top: 10px;
   border-top: 1px dashed var(--line);
   font: var(--small)/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color: var(--ink-2);
 }
+.receipt dd { margin: 0; text-align: right; color: var(--ink); overflow-wrap: anywhere; }
 .busy::after {
   content: "...";
   display: inline-block;

@@ -68,7 +68,8 @@
         });
         if (res.ok) {
           const sent = document.querySelector('.sent');
-          sent.querySelector('.sent-note').textContent = 'Thanks for reaching out. I’ll reply to ' + email + '.';
+          sent.querySelector('.sent-to').textContent = email;
+          sent.style.minHeight = form.getBoundingClientRect().height + 'px';
           form.hidden = true;
           sent.hidden = false;
           sent.focus();
