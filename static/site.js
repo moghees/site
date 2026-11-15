@@ -218,35 +218,52 @@
   if (unlock) {
     const status = unlock.querySelector('.status');
     const button = unlock.querySelector('button');
+    const sheets = document.querySelector('.sheets');
     button.disabled = false;
+    document.getElementById('print').addEventListener('click', () => print());
+
+    const length = (from, to) => {
+      const [y1, m1] = from.split('-').map(Number);
+      const now = new Date();
+      const [y2, m2] = to ? to.split('-').map(Number) : [now.getFullYear(), now.getMonth() + 1];
+      const months = (y2 - y1) * 12 + m2 - m1 + 1;
+      const y = Math.floor(months / 12);
+      const m = months % 12;
+      return [y && `${y} yr${y > 1 ? 's' : ''}`, m && `${m} mo${m > 1 ? 's' : ''}`].filter(Boolean).join(' ');
+    };
 
     unlock.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const d = Object.fromEntries(new FormData(unlock));
-      const code = d.code.trim();
+      const code = unlock.code.value.trim();
       if (!code) {
         status.textContent = 'Enter your passcode.';
         return;
       }
 
       button.disabled = true;
-      status.textContent = 'Checking…';
+      status.textContent = '';
+      sheets.classList.add('checking');
       try {
-        const res = await post('unlock', { code, who: d.who.trim() });
+        const res = await post('unlock', { code });
         if (res.ok) {
-          const box = document.querySelector('.unlocked');
-          box.innerHTML = res.html;
-          box.hidden = false;
+          sheets.innerHTML = res.html;
+          sheets.classList.remove('ghost');
+          sheets.removeAttribute('aria-hidden');
+          for (const el of sheets.querySelectorAll('[data-from]')) {
+            el.append(' · ' + length(el.dataset.from, el.dataset.to));
+          }
           document.querySelector('.locked').hidden = true;
+          document.querySelector('.unlocked').hidden = false;
         } else if (res.error === 'busy') {
-          status.textContent = 'Too many tries. Please wait a few minutes.';
+          status.textContent = 'Too many tries. Try again later.';
         } else {
-          status.textContent = 'That passcode didn’t work, or it has expired.';
+          status.textContent = 'Wrong passcode. Try again.';
         }
       } catch {
         status.textContent = api ? "Couldn’t check right now. Try again?" : 'Resume access opens soon.';
       } finally {
         button.disabled = false;
+        sheets.classList.remove('checking');
       }
     });
   }

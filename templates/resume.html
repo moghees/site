@@ -1,21 +1,52 @@
 {% extends "base.html" %}
 
+{% block body_class %}resume{% endblock %}
+
 {% block content %}
-<div class="wrap">
-  <main class="prose" id="resume">
+{%- set home = get_section(path="_index.md") %}
+<main class="wrap" id="resume">
+  <section class="intro" aria-label="Introduction">
     <h1>{{ page.title }}</h1>
-    <div class="locked">
-      {{ page.content | safe }}
-      <form id="unlock-form" class="narrow" novalidate>
-        <input name="code" placeholder="Passcode" aria-label="Passcode" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="100" required>
-        <input name="who" placeholder="Who's asking? (optional)" aria-label="Who's asking? (optional)" autocomplete="organization" maxlength="120">
-        <button class="send" type="submit" disabled>Unlock</button>
-        <p class="status" role="status"></p>
-      </form>
-      <p class="fine">Hiring? <a href="{{ get_url(path='@/_index.md') }}?topic=resume#contact">Ask for a passcode</a>.</p>
-      <noscript><p class="fine">Unlocking needs JavaScript.</p></noscript>
+    <p>{% for part in home.extra.intro %}{{ part }}{% if not loop.last %} <br class="br">{% endif %}{% endfor %}</p>
+  </section>
+
+  <div class="cv">
+    <aside class="gate">
+      <div class="locked">
+        <label class="label" for="passcode">Enter passcode to view</label>
+        <form id="unlock-form" novalidate>
+          <input id="passcode" name="code" placeholder="Passcode" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="100" required>
+          <div class="actions">
+            <button class="send" type="submit" disabled>Unlock</button>
+            <p class="status" role="status"></p>
+          </div>
+        </form>
+        <p class="fine">No passcode? <a href="{{ get_url(path='@/_index.md') }}?topic=resume#contact">Request access ›</a></p>
+        <noscript><p class="fine">Unlocking needs JavaScript.</p></noscript>
+      </div>
+      <div class="unlocked" hidden>
+        <p class="label">Unlocked</p>
+        <p><button class="text" type="button" id="print">Print or save as PDF ›</button></p>
+        <p><a href="{{ get_url(path='@/_index.md') }}#contact">Let’s talk shop ›</a></p>
+      </div>
+    </aside>
+
+    <div class="sheets ghost" aria-hidden="true">
+      <section class="card">
+        <p class="label">Experience</p>
+        <div class="role"><span class="tile"></span><div class="bones"><b></b><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="role"><span class="tile"></span><div class="bones"><b></b><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="role"><span class="tile"></span><div class="bones"><b></b><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      </section>
+      <section class="card">
+        <p class="label">Education</p>
+        <div class="role"><span class="tile"></span><div class="bones"><b></b><i></i><i></i></div></div>
+      </section>
+      <section class="card">
+        <p class="label">Skills</p>
+        <ul class="chips"><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul>
+      </section>
     </div>
-    <div class="unlocked" hidden></div>
-  </main>
-</div>
+  </div>
+</main>
 {% endblock %}
