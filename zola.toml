@@ -23,5 +23,5 @@ api_url = "https://script.google.com/macros/s/AKfycbxe06Kocnl9oeShr8QxQy3KSL5Tfp
 
 [extra.poll]
 id = "agent-framing-1"
-a = "Would you hire an AI agent that gets 19 in 20 orders right?"
-b = "Would you hire an AI agent that gets 1 in 20 orders wrong?"
+a = "Would you hire an AI agent that gets 9 in 10 orders right?"
+b = "Would you hire an AI agent that gets 1 in 10 orders wrong?"
