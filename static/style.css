@@ -209,6 +209,9 @@ textarea { resize: vertical; min-height: 120px; }
 .cv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
 .gate { position: sticky; top: 24px; padding: var(--pad) var(--pad) 0; }
 .gate .label { display: block; }
+.gate .row { display: flex; gap: 10px; }
+.gate .row .send { flex: none; }
+.gate .status:empty { display: none; }
 .gate .fine { margin-top: 16px; }
 .unlocked p { margin: 0 0 8px; font-size: var(--meta); }
 .text { background: none; border: 0; padding: 0; font: inherit; color: var(--blue); cursor: pointer; }

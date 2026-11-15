@@ -15,11 +15,11 @@
       <div class="locked">
         <label class="label" for="passcode">Enter passcode to view</label>
         <form id="unlock-form" novalidate>
-          <input id="passcode" name="code" placeholder="Passcode" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="100" required>
-          <div class="actions">
+          <div class="row">
+            <input id="passcode" name="code" placeholder="Passcode" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="100" required>
             <button class="send" type="submit" disabled>Unlock</button>
-            <p class="status" role="status"></p>
           </div>
+          <p class="status" role="status"></p>
         </form>
         <p class="fine">No passcode? <a href="{{ get_url(path='@/_index.md') }}?topic=resume#contact">Request access ›</a></p>
         <noscript><p class="fine">Unlocking needs JavaScript.</p></noscript>
