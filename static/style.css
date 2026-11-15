@@ -87,6 +87,7 @@ nav a:hover, nav a[aria-current] { color: var(--ink); text-decoration: none; }
 }
 .mark-face { fill: var(--mark); }
 .mark-depth { fill: var(--blue); }
+.mark-link:hover { text-decoration: none; }
 
 /* Home */
 
