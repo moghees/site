@@ -256,6 +256,7 @@ textarea { resize: vertical; min-height: 120px; }
   .projects ul, .lower { grid-template-columns: minmax(0, 1fr); }
   .lower .poll { grid-column: auto; }
   .band { margin-top: 48px; }
+  .contact { margin: 48px var(--pad) 0; padding: 48px 0 0; border-top: 1px solid var(--line); }
   .foot-links { display: none; }
   .br { display: none; }
   .poll-q { flex: 1; }
