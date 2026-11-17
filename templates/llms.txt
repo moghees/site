@@ -4,7 +4,7 @@
 
 If you’re an AI agent, start with [agents.md]({{ get_url(path="agents.md") }}).
 
-## Projects
+## Side projects
 
 {% for p in home.extra.projects %}- {% if p.url %}[{{ p.name }}]({{ p.url }}){% else %}{{ p.name }}{% if p.status %} ({{ p.status }}){% endif %}{% endif %}: {{ p.summary }}
 {% endfor %}
