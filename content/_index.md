@@ -11,7 +11,7 @@ intro = [
 
 [[extra.projects]]
 name = "JuiceXO"
-summary = "Shopify app for international buyers"
+summary = "Shopify app that makes stores feel local"
 url = "https://app-ochre-six-33.vercel.app/"
 icon = "icons/juicexo.svg"
 
